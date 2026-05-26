@@ -2,13 +2,14 @@
 
 # 🎓 Education Management System
 
-### A comprehensive academic management platform built with the MEAN stack.
+### A multi-role academic platform with course management, blogs, and enrollment — built with the MEAN stack.
 
-[![Angular](https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white)](https://angular.io/)
+[![Angular](https://img.shields.io/badge/Angular_21-DD0031?style=for-the-badge&logo=angular&logoColor=white)](https://angular.io/)
 [![Node.js](https://img.shields.io/badge/Node.js-3C873A?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
-[![Express](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
+[![Express](https://img.shields.io/badge/Express_5-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-4DB33D?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
-[![Bootstrap](https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
+[![Bootstrap](https://img.shields.io/badge/Bootstrap_5-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 
 </div>
 
@@ -16,18 +17,28 @@
 
 ## 📌 Overview
 
-The **Education Management System** is a MEAN stack web application designed to simplify academic administration. It provides role-based dashboards for admins, teachers, and students — covering student records, course management, attendance, and more through a clean Angular UI backed by a RESTful Express API.
+The **Education Management System** is a full-stack MEAN application supporting three roles — Admin, Instructor, and Student. It handles course enrollment, blog publishing, user reviews, contact messaging, and profile management — all powered by a RESTful Express API with JWT-based authentication and a clean Angular 21 frontend.
 
 ---
 
 ## ✨ Features
 
-- 🔐 **Role-based Authentication** — Admin, Teacher, and Student roles
-- 👩‍🎓 **Student Management** — Enroll, update, and track student records
-- 📚 **Course Management** — Create and manage courses and assignments
-- 📋 **Attendance Tracking** — Mark and view attendance records
-- 📊 **Result Management** — Enter grades and view academic performance
-- 🖥️ **Responsive Angular UI** — Clean, Bootstrap-powered interface
+### 👨‍🎓 Student (Client)
+- Register, log in, and manage profile
+- Browse and enroll in courses
+- View enrolled courses and track progress
+- Submit reviews and read the blog
+- Contact support via the contact form
+
+### 👨‍🏫 Instructor
+- Manage and publish their own courses
+- View enrolled students per course
+
+### 🛠️ Admin
+- Full user management (students, teachers, admins)
+- Course, blog, and review moderation
+- View and respond to contact messages
+- Admin dashboard with system overview
 
 ---
 
@@ -35,11 +46,13 @@ The **Education Management System** is a MEAN stack web application designed to 
 
 | Layer | Technology |
 |-------|-----------|
-| Frontend | Angular (TypeScript), Bootstrap 5 |
-| Backend | Node.js, Express.js |
+| Frontend | Angular 21, TypeScript, Bootstrap 5 |
+| Backend | Node.js, Express 5 |
 | Database | MongoDB (Mongoose ODM) |
-| Authentication | JWT (JSON Web Tokens) |
-| Architecture | REST API |
+| Authentication | JWT (bcryptjs), Auth Interceptor |
+| Validation | Zod |
+| Security | Helmet, CORS |
+| Dev Tools | Nodemon, Morgan |
 
 ---
 
@@ -47,21 +60,54 @@ The **Education Management System** is a MEAN stack web application designed to 
 
 ```
 education-management-system/
-├── backend/                   # Node.js + Express + Mongoose REST API
-│   ├── controllers/
-│   ├── models/
-│   ├── routes/
-│   ├── middleware/
-│   ├── .env.example
-│   └── server.js
-├── frontend/                  # Angular (TypeScript) + Bootstrap UI
-│   ├── src/
-│   │   ├── app/
-│   │   │   ├── components/
-│   │   │   ├── services/
-│   │   │   └── guards/
-│   │   └── environments/
-│   └── angular.json
+├── backend/
+│   └── src/
+│       ├── config/
+│       │   ├── db.js                  # MongoDB connection
+│       │   └── env.js                 # Environment config
+│       ├── controllers/
+│       │   ├── authController.js
+│       │   ├── courseController.js
+│       │   ├── blogController.js
+│       │   ├── reviewController.js
+│       │   ├── contactController.js
+│       │   └── userAdminController.js
+│       ├── middleware/
+│       │   ├── auth.js                # JWT middleware
+│       │   ├── asyncHandler.js
+│       │   └── errorHandler.js
+│       ├── models/
+│       │   ├── User.js
+│       │   ├── Course.js
+│       │   ├── Enrollment.js
+│       │   ├── Blog.js
+│       │   ├── Review.js
+│       │   └── ContactMessage.js
+│       ├── routes/
+│       │   ├── authRoutes.js
+│       │   ├── courseRoutes.js
+│       │   ├── blogRoutes.js
+│       │   ├── reviewRoutes.js
+│       │   ├── contactRoutes.js
+│       │   └── adminUserRoutes.js
+│       ├── scripts/
+│       │   └── seedAdmin.js           # Seeds default admin
+│       ├── utils/
+│       │   ├── jwt.js
+│       │   └── httpError.js
+│       ├── app.js
+│       └── server.js
+├── frontend/
+│   └── src/app/
+│       ├── features/
+│       │   ├── admin/                 # Admin components
+│       │   ├── instructor/            # Instructor components
+│       │   └── client/                # Student-facing components
+│       ├── shared/components/         # Navbar, Logo
+│       └── core/
+│           ├── services/              # auth, course, blog, student, review, contact
+│           ├── guards/                # auth.guard, role.guard
+│           └── interceptors/          # auth.interceptor
 └── README.md
 ```
 
@@ -71,7 +117,7 @@ education-management-system/
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) v16+
+- [Node.js](https://nodejs.org/) v18+
 - [MongoDB](https://www.mongodb.com/) running locally on `mongodb://127.0.0.1:27017`
 - [Angular CLI](https://angular.io/cli): `npm install -g @angular/cli`
 
@@ -86,16 +132,16 @@ cd education-management-system
 
 ```bash
 cd backend
-cp .env.example .env       # Add your environment variables
+cp .env.example .env       # Configure your environment variables
 npm install
-npm run seed:admin         # Seeds the default admin account
+npm run seed:admin         # Seeds default admin account
 npm run dev                # Starts on http://localhost:5000
 ```
 
 **Environment Variables (`.env`)**
 ```env
 PORT=5000
-MONGO_URI=mongodb://127.0.0.1:27017/education_management_system
+MONGO_URI=mongodb://127.0.0.1:27017/ems_db
 JWT_SECRET=your_jwt_secret_key
 ```
 
@@ -113,7 +159,7 @@ Open your browser at **http://localhost:4200**
 
 ## 🔑 Default Admin Credentials
 
-> ⚠️ Change these credentials immediately after your first login in production.
+> ⚠️ Change these credentials immediately after first login in production.
 
 | Field | Value |
 |-------|-------|
@@ -126,12 +172,16 @@ Open your browser at **http://localhost:4200**
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/api/auth/login` | Login and get JWT |
-| GET | `/api/students` | List all students |
-| POST | `/api/students` | Add a new student |
+| POST | `/api/auth/register` | Register user |
+| POST | `/api/auth/login` | Login |
 | GET | `/api/courses` | List all courses |
-| POST | `/api/courses` | Create a course |
-| GET | `/api/attendance` | Get attendance records |
+| POST | `/api/courses` | Create course (Instructor/Admin) |
+| GET | `/api/blogs` | List all blogs |
+| POST | `/api/blogs` | Create blog (Admin) |
+| GET | `/api/reviews` | List reviews |
+| POST | `/api/reviews` | Submit review (Student) |
+| POST | `/api/contact` | Send contact message |
+| GET | `/api/admin/users` | Manage all users (Admin) |
 
 ---
 
